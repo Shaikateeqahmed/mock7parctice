@@ -6,7 +6,7 @@ const note = express.Router();
 note.get("/",async(req,res)=>{
     try {
         let note = await NoteModel.find();
-        res.send(note);
+        res.json(note);
     } catch (error) {
         console.log(error);
     }
@@ -17,7 +17,7 @@ note.post("/create",async(req,res)=>{
     try {
         let note = new NoteModel({name,author,type,content,UserID:req.body.UserID});
         await note.save();
-        res.send("Note successfully saved!");
+        res.json("Note successfully saved!");
     } catch (error) {
         console.log(error);
     }
@@ -33,9 +33,9 @@ note.patch("/update/:id",async(req,res)=>{
         console.log(note,id_of_note,id_of_req);
         if(id_of_note===id_of_req){
             await NoteModel.findByIdAndUpdate({_id:ID},payload);
-            res.send(`Note of a Content:- ${note[0].content} Change to ${payload.content}`);
+            res.json(`Note of a Content:- ${note[0].content} Change to ${payload.content}`);
         }else{
-            res.send(`U are not Authorized!`);
+            res.json(`U are not Authorized!`);
         }
     } catch (error) {
         console.log(error);
@@ -51,9 +51,9 @@ note.delete("/delete/:id",async(req,res)=>{
         console.log(note,id_of_note,id_of_req);
         if(id_of_note===id_of_req){
             await NoteModel.findByIdAndDelete({_id:ID});
-            res.send(`Note of a Content:- ${note[0].content} Deleted`);
+            res.json(`Note of a Content:- ${note[0].content} Deleted`);
         }else{
-            res.send(`U are not Authorized!`);
+            res.json(`U are not Authorized!`);
         }
     } catch (error) {
         console.log(error);

@@ -14,7 +14,7 @@ user.post("/register",async(req,res)=>{
    let {name, email, password,age} =req.body;
    let user = await UserModel.find({email});
    if(user.length>0){
-    res.send("user with this email is already exist");
+    res.json("user with this email is already exist");
    }else{
      bcrypt.hash(password,5,async(err,hash)=>{
         if(err){
@@ -22,7 +22,7 @@ user.post("/register",async(req,res)=>{
         }else{
             let newuser = new UserModel({name,email,password:hash,age});
             await newuser.save();
-            res.send("user successfully Singup!");
+            res.json("user successfully Singup!");
         }
      })
    }
@@ -34,14 +34,14 @@ user.post("/login",async(req,res)=>{
     if(user.length>0){
         bcrypt.compare(password,user[0].password,(err,result)=>{
             if(err){
-                res.send("Invalid Crediantials");
+                res.json("Invalid Crediantials");
             }else{
                let token = jwt.sign({UserID:user[0]._id},process.env.key);
-               res.send(token);
+               res.json(token);
             }
         })
     }else{
-         res.send("Invalid Crediantials");
+         res.json("Invalid Crediantials");
     }
  })
 
